@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { log } = require('console');
+const { log,error } = require('console');
 
 const folderPath = './files-to-rename';
 const customFilePrefix = 'oo';
@@ -9,7 +9,7 @@ const separator = '-';
 fs.readdir(folderPath, (error, files) => {
     if (error) {
         // Handle error here
-        console.log(error);
+        log(error);
     }
 
     const {length:filesCount} = files;
@@ -27,18 +27,18 @@ fs.readdir(folderPath, (error, files) => {
             const newFileName = [customFilePrefix,fileName.replace(regexPattern,'')].filter(e=>e).join(separator)+fileExtention;
             const oldPath = path.join(__dirname, folderPath, file);
             const newPath = path.join(__dirname, folderPath, newFileName);
-            
+            log(fileExtention);
             try {
                 fs.renameSync(oldPath, newPath);
                 renamedFilesCount++;
             }catch (err) {
-                console.error(`Error renaming file ${oldPath}:`, err);
+                error(`Error renaming file ${oldPath}:`, err);
             }
         }
-        console.log(`${renamedFilesCount} from ${filesCount} files has changed successfully`);
-        
+        log(`${renamedFilesCount} from ${filesCount} files has changed successfully`);
+
     }else{
-        console.log(`files should be more than 1 only ${filesCount} found`);
+        log(`files should be more than 1 only ${filesCount} found`);
     }
 
     
